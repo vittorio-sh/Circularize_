@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { UserContext } from '@/pages/_app'; // Access global UserContext
 import Nav from "@/components/Nav";
 import Profile from "@/components/Profile";
