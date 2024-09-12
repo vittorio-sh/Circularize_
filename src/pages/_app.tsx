@@ -1,11 +1,32 @@
 import '@/styles/globals.css';
 import { createContext, useState, useEffect } from 'react';
 
-// Create UserContext
-export const UserContext = createContext(null);
+// Define types for User and UserContext
+interface User {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
+  city: string;
+  zipCode: string;
+  birthday: string;
+  country: string;
+  activeEvents: string[];
+  createdEvents: string[];
+}
 
-function App({ Component, pageProps }: { Component: any, pageProps: any }) {
-  const [user, setUser] = useState({
+interface UserContextType {
+  user: User;
+  setUser: (userData: User) => void;
+  loginUser: (userData: User) => void;
+  logoutUser: () => void;
+}
+
+// Create UserContext
+export const UserContext = createContext<UserContextType | null>(null);
+
+function App({ Component, pageProps }: { Component: any; pageProps: any }) {
+  const [user, setUser] = useState<User>({
     firstName: '',
     lastName: '',
     email: '',
@@ -14,8 +35,8 @@ function App({ Component, pageProps }: { Component: any, pageProps: any }) {
     zipCode: '',
     birthday: '',
     country: '',
-    activeEvents: [''],
-    createdEvents: [''],
+    activeEvents: [], // Initialize as an empty array
+    createdEvents: [], // Initialize as an empty array
   });
 
   // On first load, check if user data exists in localStorage
@@ -27,7 +48,7 @@ function App({ Component, pageProps }: { Component: any, pageProps: any }) {
   }, []);
 
   // Function to log in the user and store in localStorage
-  const loginUser = (userData) => {
+  const loginUser = (userData: User) => {
     setUser(userData);
     localStorage.setItem('user', JSON.stringify(userData)); // Persist user data
   };
@@ -43,14 +64,14 @@ function App({ Component, pageProps }: { Component: any, pageProps: any }) {
       zipCode: '',
       birthday: '',
       country: '',
-      activeEvents: [''],
-      createdEvents: [''],
+      activeEvents: [], // Clear activeEvents
+      createdEvents: [], // Clear createdEvents
     });
     localStorage.removeItem('user'); // Clear user data from localStorage
   };
 
   return (
-    <UserContext.Provider value={{ user,setUser, loginUser, logoutUser }}>
+    <UserContext.Provider value={{ user, setUser, loginUser, logoutUser }}>
       <Component {...pageProps} />
     </UserContext.Provider>
   );
