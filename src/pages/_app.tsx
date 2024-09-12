@@ -50,7 +50,7 @@ function App({ Component, pageProps }) {
   };
 
   return (
-    <UserContext.Provider value={{ user, loginUser, logoutUser }}>
+    <UserContext.Provider value={{ user,setUser, loginUser, logoutUser }}>
       <Component {...pageProps} />
     </UserContext.Provider>
   );

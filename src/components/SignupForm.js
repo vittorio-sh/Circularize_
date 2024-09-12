@@ -107,9 +107,6 @@ export default function SignupForm({ onToggle, onSignupSuccess }) {
           <Button type="submit" className="w-full" disabled={loading}>
             {loading ? 'Signing up...' : 'Create an account'}
           </Button>
-          <Button variant="outline" className="w-full">
-            Sign up with GitHub
-          </Button>
         </form>
         <div className="mt-4 text-center text-sm">
           Already have an account?{" "}

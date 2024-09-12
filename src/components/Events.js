@@ -1,30 +1,46 @@
 import React, { useContext } from 'react';
-import { UserContext } from '@/pages/_app'; // Adjust the import path if needed
+import { UserContext } from '@/pages/_app';
 
 export default function Events() {
-  const { user } = useContext(UserContext); // Access user context
+  const { user, setUser } = useContext(UserContext);
 
-  // If there are no active events
+  const handleRemoveEvent = (eventId) => {
+    const updatedActiveEvents = user.activeEvents.filter((event) => event._id !== eventId);
+    const updatedUser = { ...user, activeEvents: updatedActiveEvents };
+    setUser(updatedUser);
+    localStorage.setItem('user', JSON.stringify(updatedUser)); // Persist to localStorage
+  };
+
   if (!user || user.activeEvents.length === 0) {
     return (
-      <div className="p-4 bg-white shadow-lg rounded-md">
-        <h2 className="text-2xl font-bold mb-4 text-blue-600">No Active Events</h2>
-        <p>You currently have no active events.</p>
+      <div className="p-4 bg-white shadow-lg rounded-md h-full flex flex-col justify-center items-center">
+        <h2 className="text-3xl font-bold mb-4 text-blue-600">No Active Events</h2>
+        <p className="text-gray-500">You currently have no active events.</p>
       </div>
     );
   }
 
   return (
-    <div className="p-4 bg-white shadow-lg rounded-md">
-      <h2 className="text-2xl font-bold mb-4 text-blue-600">Your Active Events</h2>
-      <ul className="space-y-2">
-        {user.activeEvents.map((event) => (
-          <li key={event.id} className="border p-3 rounded-md border-blue-200">
-            <h3 className="font-semibold text-lg">{event.name}</h3>
-            <p className="text-gray-500">Date: {event.date}</p>
-          </li>
-        ))}
-      </ul>
+    <div className="p-4 bg-white shadow-lg rounded-md h-full flex flex-col">
+      <h2 className="text-3xl font-bold mb-4 text-blue-600">Your Active Events</h2>
+      <div className="flex-grow overflow-y-auto pr-2">
+        <ul className="space-y-3">
+          {user.activeEvents.map((event) => (
+            <li key={event._id} className="flex justify-between items-center bg-blue-50 p-4 rounded-md shadow hover:shadow-lg transition-shadow duration-200 ease-in-out">
+              <div>
+                <h3 className="font-semibold text-xl text-blue-800">{event.title}</h3>
+                <p className="text-gray-600">Date: {event.date}</p>
+              </div>
+              <button
+                className="text-red-500 hover:text-red-700 text-2xl font-bold transition-transform transform hover:scale-125"
+                onClick={() => handleRemoveEvent(event._id)}
+              >
+                ✖
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }

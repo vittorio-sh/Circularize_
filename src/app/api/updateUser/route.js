@@ -1,21 +1,35 @@
-// pages/api/updateUser.js
 import { connectToDatabase } from '@/utils/mongodb';
+import { ObjectId } from 'mongodb';
 
-export default async function handler(req, res) {
-  if (req.method === 'POST') {
-    const { userId, updatedUser } = req.body;
+// Define the POST method as a named export
+export async function POST(req) {
+  try {
+    const { email, updatedUser } = await req.json();  // Parse the incoming JSON data
 
-    try {
-      const { db } = await connectToDatabase();
-      const collection = db.collection('users'); // Using your collection 'users'
-
-      await collection.updateOne({ _id: userId }, { $set: updatedUser });
-
-      res.status(200).json({ message: 'User updated successfully' });
-    } catch (error) {
-      res.status(500).json({ message: 'Failed to update user', error });
+    if (!email || !updatedUser) {
+      return new Response(JSON.stringify({ message: 'Email and updatedUser are required' }), { status: 400 });
     }
-  } else {
-    res.status(405).json({ message: 'Method Not Allowed' });
+
+    const { db } = await connectToDatabase();
+    const collection = db.collection('users');
+
+    // Ensure all fields from updatedUser are set, even if they weren't initially provided
+    const updatedFields = { ...updatedUser };
+
+    // Update the user in the database by finding via email
+    const result = await collection.updateOne(
+      { email },              // Find user by email
+      { $set: updatedFields }  // Set or update the provided fields
+    );
+
+    // Check if a user was actually updated
+    if (result.matchedCount === 0) {
+      return new Response(JSON.stringify({ message: 'User not found' }), { status: 404 });
+    }
+
+    return new Response(JSON.stringify({ message: 'User updated successfully' }), { status: 200 });
+  } catch (error) {
+    console.error('Error updating user:', error);
+    return new Response(JSON.stringify({ message: 'Failed to update user', error: error.message }), { status: 500 });
   }
 }
