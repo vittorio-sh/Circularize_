@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function EventCard({ event, onLike, onDislike }) {
+export default function EventCard({ event, handleLike, handleDislike }) {
   return (
     <div className="relative w-full max-w-lg mx-auto bg-white shadow-md rounded-lg overflow-hidden flex flex-col mt-4 mb-4 h-auto">
       {/* Event Photo */}
@@ -36,7 +36,7 @@ export default function EventCard({ event, onLike, onDislike }) {
         {/* Dislike Button */}
         <button
           className="flex-1 flex justify-center items-center text-red-500 text-4xl"
-          onClick={() => onDislike(event.id)}
+          onClick={() => handleDislike(event.id)}
         >
           <div className="like">✖</div>
         </button>
@@ -44,7 +44,7 @@ export default function EventCard({ event, onLike, onDislike }) {
         {/* Like Button */}
         <button
           className="flex-1 flex justify-center items-center text-green-500 text-4xl"
-          onClick={() => onLike(event.id)}
+          onClick={() => handleLike(event.id)}
         >
           <div className="like">❤️</div>
         </button>

@@ -1,34 +1,36 @@
-import React, { useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
+import { UserContext } from '@/pages/_app'; // Access global UserContext
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 
-export default function Profile() {
-  const [isEditing, setIsEditing] = useState(true);
-  const [profile, setProfile] = useState({
-    firstName: '',
-    lastName: '',
-    country: '',
-    phoneNumber: '',
-    address: '',
-    zipCode: '',
-    email: '',
-    birthday: '',
-    city: ''
-  });
+function Profile() {
+  const { user, setUser } = useContext(UserContext); // Access user and setUser from context
+  const [profile, setProfile] = useState(user); // Create a local copy of user data
+  const [isEditing, setIsEditing] = useState(false); // Manage editing state within Profile
 
+  // Sync local profile with user context only on mount or when user context changes
+  useEffect(() => {
+    setProfile(user);
+  }, [user]);
+
+  // Handle input changes for local profile
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setProfile({ ...profile, [name]: value });
+    setProfile({ ...profile, [name]: value }); // Update local state
   };
 
+  // Save changes to global state (context) only when Save is clicked
   const handleSave = () => {
-    setIsEditing(false);
-    // You can add logic to save the data to a database or backend here
+    setUser(profile); // Update global user context
+    localStorage.setItem('user', JSON.stringify(profile)); // Optionally persist to local storage
+    setIsEditing(false); // Exit edit mode
   };
 
-  const handleEdit = () => {
-    setIsEditing(true);
+  // Cancel editing and reset profile to match original user context data
+  const handleCancel = () => {
+    setProfile(user); // Reset local profile to original context data
+    setIsEditing(false); // Exit edit mode
   };
 
   return (
@@ -61,13 +63,13 @@ export default function Profile() {
           />
         </div>
 
-        {/* Country */}
+        {/* Email */}
         <div>
-          <Label htmlFor="country">Country</Label>
+          <Label htmlFor="email">Email</Label>
           <Input
-            id="country"
-            name="country"
-            value={profile.country}
+            id="email"
+            name="email"
+            value={profile.email}
             onChange={handleInputChange}
             disabled={!isEditing}
             className="w-full mt-1 border-2 border-blue-200"
@@ -87,13 +89,26 @@ export default function Profile() {
           />
         </div>
 
-        {/* Address */}
+        {/* Country */}
         <div>
-          <Label htmlFor="address">Address</Label>
+          <Label htmlFor="country">Country</Label>
           <Input
-            id="address"
-            name="address"
-            value={profile.address}
+            id="country"
+            name="country"
+            value={profile.country}
+            onChange={handleInputChange}
+            disabled={!isEditing}
+            className="w-full mt-1 border-2 border-blue-200"
+          />
+        </div>
+
+        {/* City */}
+        <div>
+          <Label htmlFor="city">City</Label>
+          <Input
+            id="city"
+            name="city"
+            value={profile.city}
             onChange={handleInputChange}
             disabled={!isEditing}
             className="w-full mt-1 border-2 border-blue-200"
@@ -107,19 +122,6 @@ export default function Profile() {
             id="zipCode"
             name="zipCode"
             value={profile.zipCode}
-            onChange={handleInputChange}
-            disabled={!isEditing}
-            className="w-full mt-1 border-2 border-blue-200"
-          />
-        </div>
-
-        {/* Email */}
-        <div>
-          <Label htmlFor="email">Email</Label>
-          <Input
-            id="email"
-            name="email"
-            value={profile.email}
             onChange={handleInputChange}
             disabled={!isEditing}
             className="w-full mt-1 border-2 border-blue-200"
@@ -140,31 +142,20 @@ export default function Profile() {
           />
         </div>
 
-        {/* City */}
-        <div>
-          <Label htmlFor="city">City</Label>
-          <Input
-            id="city"
-            name="city"
-            value={profile.city}
-            onChange={handleInputChange}
-            disabled={!isEditing}
-            className="w-full mt-1 border-2 border-blue-200"
-          />
-        </div>
-
-        {/* Buttons */}
+        {/* Save/Cancel Buttons */}
         <div className="col-span-2 flex justify-between mt-6">
           {isEditing ? (
-            <Button
-              onClick={handleSave}
-              className="bg-blue-500 text-white hover:bg-blue-600"
-            >
-              Save
-            </Button>
+            <>
+              <Button onClick={handleSave} className="bg-blue-500 text-white hover:bg-blue-600">
+                Save
+              </Button>
+              <Button onClick={handleCancel} className="bg-gray-500 text-white hover:bg-gray-600">
+                Cancel
+              </Button>
+            </>
           ) : (
             <Button
-              onClick={handleEdit}
+              onClick={() => setIsEditing(true)}
               className="bg-blue-200 text-blue-500 hover:bg-blue-300"
             >
               Edit
@@ -175,3 +166,5 @@ export default function Profile() {
     </div>
   );
 }
+
+export default React.memo(Profile);

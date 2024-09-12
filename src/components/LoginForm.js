@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,20 +11,61 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-export default function LoginForm({ onToggle }) {
+export default function LoginForm({ onToggle, onLoginSuccess }) {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+
+    try {
+      const res = await fetch('/api/loginUser', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.message || 'An error occurred');
+        setLoading(false);
+        return;
+      }
+
+      // Call onLoginSuccess to update user context and redirect to home
+      onLoginSuccess(data.user);
+      setLoading(false);
+    } catch (err) {
+      setError('Something went wrong, please try again.');
+      setLoading(false);
+    }
+  };
+
   return (
     <Card className="mx-auto max-w-sm">
       <CardHeader>
         <CardTitle className="text-2xl">Login</CardTitle>
         <CardDescription>
-          Enter your email below to login to your account
+          Enter your email and password to login.
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="grid gap-4">
+        <form onSubmit={handleSubmit} className="grid gap-4">
           <div className="grid gap-2">
             <Label htmlFor="email">Email</Label>
-            <Input id="email" type="email" placeholder="m@example.com" required />
+            <Input
+              id="email"
+              type="email"
+              placeholder="m@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
           </div>
           <div className="grid gap-2">
             <div className="flex items-center">
@@ -32,15 +74,22 @@ export default function LoginForm({ onToggle }) {
                 Forgot your password?
               </Link>
             </div>
-            <Input id="password" type="password" required />
+            <Input
+              id="password"
+              type="password"
+              placeholder="••••••••"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
           </div>
-          <Button type="submit" className="w-full">
-            Login
+
+          {error && <p className="text-red-500">{error}</p>}
+
+          <Button type="submit" className="w-full" disabled={loading}>
+            {loading ? 'Logging in...' : 'Login'}
           </Button>
-          <Button variant="outline" className="w-full">
-            Login with Google
-          </Button>
-        </div>
+        </form>
         <div className="mt-4 text-center text-sm">
           Don&apos;t have an account?{" "}
           <Link href="#" onClick={onToggle} className="underline">

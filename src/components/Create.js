@@ -1,23 +1,44 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
+import { UserContext } from '@/pages/_app'; // Import UserContext to access global state
 
 export default function Create() {
+  const { user, setUser } = useContext(UserContext); // Access user data and setUser function from UserContext
   const [eventName, setEventName] = useState('');
   const [eventDate, setEventDate] = useState('');
   const [description, setDescription] = useState('');
 
   const handleCreate = () => {
-    // Logic to handle creating an event
-    console.log({ eventName, eventDate, description });
+    // Create the new event object
+    const newEvent = {
+      id: Date.now(), // Unique ID using timestamp
+      name: eventName,
+      date: eventDate,
+      description,
+    };
+
+    // Add the new event to the user's createdEvents array
+    const updatedUser = {
+      ...user,
+      createdEvents: [...user.createdEvents, newEvent],
+    };
+
+    // Update the user context with the new event
+    setUser(updatedUser);
+
+    // Optionally reset form fields after creation
+    setEventName('');
+    setEventDate('');
+    setDescription('');
   };
 
   return (
     <div className="p-4 bg-white shadow-lg rounded-md">
       <h2 className="text-2xl font-bold mb-4 text-blue-600">Create Event</h2>
-      <form className="space-y-4">
+      <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
         {/* Event Name */}
         <div>
           <Label htmlFor="eventName">Event Name</Label>
