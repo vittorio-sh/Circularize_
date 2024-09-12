@@ -4,7 +4,7 @@ import { createContext, useState, useEffect } from 'react';
 // Create UserContext
 export const UserContext = createContext(null);
 
-function App({ Component, pageProps }) {
+function App({ Component, pageProps }: { Component: any, pageProps: any }) {
   const [user, setUser] = useState({
     firstName: '',
     lastName: '',
