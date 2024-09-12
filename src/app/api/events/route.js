@@ -1,6 +1,6 @@
 import { connectToDatabase } from '@/utils/mongodb';
 
-export async function GET(req) {
+export async function GET() {
   try {
     const { db } = await connectToDatabase();
     const eventsCollection = db.collection('events');

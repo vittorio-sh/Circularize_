@@ -117,7 +117,7 @@ export default function FilterNav({ onFilterChange }) {
 
 // Correct implementation of React.forwardRef
 const ListItem = React.forwardRef(function ListItem(
-  { className, title, children, onClick, ...props },
+  {title, children, onClick, ...props },
   ref
 ) {
   return (
