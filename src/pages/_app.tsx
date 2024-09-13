@@ -1,5 +1,6 @@
 import '@/styles/globals.css';
 import { createContext, useState, useEffect } from 'react';
+import type { AppProps } from 'next/app';
 
 // Define types for User and UserContext
 interface User {
@@ -25,7 +26,7 @@ interface UserContextType {
 // Create UserContext
 export const UserContext = createContext<UserContextType | null>(null);
 
-function App({ Component, pageProps }: { Component: any; pageProps: any }) {
+function App({ Component, pageProps }: AppProps) {
   const [user, setUser] = useState<User>({
     firstName: '',
     lastName: '',
