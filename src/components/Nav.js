@@ -14,7 +14,7 @@ export default function Nav({ onAddComponent }) {
         <nav className="flex gap-6 text-lg font-medium justify-center flex-1">
           <button
             className={`nav-button ${
-              activeComponent === 'Profile' ? 'active' : ''
+              activeComponent === 'Profile' ? 'text-purple-600 border-b-2 border-purple-600' : 'text-gray-500 hover:text-purple-600'
             }`}
             onClick={() => handleNavClick('Profile')}
           >
@@ -22,7 +22,7 @@ export default function Nav({ onAddComponent }) {
           </button>
           <button
             className={`nav-button ${
-              activeComponent === 'Events' ? 'active' : ''
+              activeComponent === 'Events' ? 'text-purple-600 border-b-2 border-purple-600' : 'text-gray-500 hover:text-purple-600'
             }`}
             onClick={() => handleNavClick('Events')}
           >
@@ -30,7 +30,7 @@ export default function Nav({ onAddComponent }) {
           </button>
           <button
             className={`nav-button ${
-              activeComponent === 'Create' ? 'active' : ''
+              activeComponent === 'Create' ? 'text-purple-600 border-b-2 border-purple-600' : 'text-gray-500 hover:text-purple-600'
             }`}
             onClick={() => handleNavClick('Create')}
           >

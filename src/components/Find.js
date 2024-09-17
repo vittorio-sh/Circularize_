@@ -1,13 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react';
 import EventCard from './EventCard';
-import { UserContext } from '@/pages/_app'; // Assuming you're using UserContext for user data
+import { UserContext } from '@/pages/_app'; 
 
 export default function Find() {
   const { user, setUser } = useContext(UserContext);
   const [events, setEvents] = useState([]);
   const [currentEventIndex, setCurrentEventIndex] = useState(0);
 
-  // Fetch events from the database
   useEffect(() => {
     const fetchEvents = async () => {
       try {

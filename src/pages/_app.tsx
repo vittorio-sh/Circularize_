@@ -36,8 +36,8 @@ function App({ Component, pageProps }: AppProps) {
     zipCode: '',
     birthday: '',
     country: '',
-    activeEvents: [], // Initialize as an empty array
-    createdEvents: [], // Initialize as an empty array
+    activeEvents: [], 
+    createdEvents: [], 
   });
 
   // On first load, check if user data exists in localStorage

@@ -3,25 +3,24 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { UserContext } from '@/pages/_app'; // Import UserContext to access global state
+import { UserContext } from '@/pages/_app'; 
 
 export default function Create() {
-  const { user, setUser } = useContext(UserContext); // Access user data and setUser function from UserContext
+  const { user, setUser } = useContext(UserContext); 
   const [eventName, setEventName] = useState('');
   const [eventDate, setEventDate] = useState('');
   const [description, setDescription] = useState('');
-  const [imageUrl, setImageUrl] = useState(''); // New state for image URL
-  const [tags, setTags] = useState(''); // New state for tags as comma-separated string
+  const [imageUrl, setImageUrl] = useState('');
+  const [tags, setTags] = useState(''); 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const handleCreate = async (e) => {
-    e.preventDefault(); // Prevent form from reloading the page
+    e.preventDefault(); 
     setLoading(true);
     setError(null);
 
     try {
-      // Convert comma-separated string into an array of tags
       const tagArray = tags.split(',').map(tag => tag.trim());
 
       const response = await fetch('/api/CreateEvent', {
@@ -33,8 +32,8 @@ export default function Create() {
           name: eventName,
           date: eventDate,
           description,
-          imageUrl, // Include the imageUrl in the request body
-          tags: tagArray, // Send the tags array
+          imageUrl, 
+          tags: tagArray, 
         }),
       });
 
@@ -44,16 +43,14 @@ export default function Create() {
 
       const data = await response.json();
 
-      // Add the new event to the user's createdEvents array
       const updatedUser = {
         ...user,
         createdEvents: [...user.createdEvents, data.event],
       };
 
-      // Update the user context with the new event
       setUser(updatedUser);
 
-      // Optionally reset form fields after creation
+      // reset form fields after 
       setEventName('');
       setEventDate('');
       setDescription('');
@@ -69,9 +66,8 @@ export default function Create() {
 
   return (
     <div className="p-4 bg-white shadow-lg rounded-md">
-      <h2 className="text-2xl font-bold mb-4 text-blue-600">Create Event</h2>
+      <h2 className="text-2xl font-bold mb-4 text-purple-600">Create Event</h2>
       <form className="space-y-4" onSubmit={handleCreate}>
-        {/* Event Name */}
         <div>
           <Label htmlFor="eventName">Event Name</Label>
           <Input
@@ -79,11 +75,10 @@ export default function Create() {
             value={eventName}
             onChange={(e) => setEventName(e.target.value)}
             placeholder="Enter event name"
-            className="mt-1 border-2 border-blue-200 w-full"
+            className="mt-1 border-2 border-purple-200 w-full"
+            required
           />
         </div>
-
-        {/* Event Date */}
         <div>
           <Label htmlFor="eventDate">Event Date</Label>
           <Input
@@ -91,11 +86,10 @@ export default function Create() {
             type="date"
             value={eventDate}
             onChange={(e) => setEventDate(e.target.value)}
-            className="mt-1 border-2 border-blue-200 w-full"
+            className="mt-1 border-2 border-purple-200 w-full"
+            required
           />
         </div>
-
-        {/* Description */}
         <div>
           <Label htmlFor="description">Description</Label>
           <Textarea
@@ -103,11 +97,10 @@ export default function Create() {
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             placeholder="Describe your event"
-            className="mt-1 border-2 border-blue-200 w-full"
+            className="mt-1 border-2 border-purple-200 w-full"
+            required
           />
         </div>
-
-        {/* Image URL */}
         <div>
           <Label htmlFor="imageUrl">Event Image URL</Label>
           <Input
@@ -115,11 +108,10 @@ export default function Create() {
             value={imageUrl}
             onChange={(e) => setImageUrl(e.target.value)}
             placeholder="Enter image URL for the event"
-            className="mt-1 border-2 border-blue-200 w-full"
+            className="mt-1 border-2 border-purple-200 w-full"
+              required
           />
         </div>
-
-        {/* Tags */}
         <div>
           <Label htmlFor="tags">Event Tags (comma-separated)</Label>
           <Input
@@ -127,20 +119,17 @@ export default function Create() {
             value={tags}
             onChange={(e) => setTags(e.target.value)}
             placeholder="Enter event tags (e.g., Music, Festival)"
-            className="mt-1 border-2 border-blue-200 w-full"
+            className="mt-1 border-2 border-purple-200 w-full"
+            required
           />
         </div>
-
-        {/* Create Button */}
         <Button
-          type="submit" // Submit the form
-          className="w-full bg-blue-500 text-white hover:bg-blue-600"
+          type="submit" 
+          className="w-full bg-purple-500 text-white hover:bg-purple-600"
           disabled={loading}
         >
           {loading ? 'Creating...' : 'Create Event'}
         </Button>
-
-        {/* Error Message */}
         {error && <p className="text-red-500 mt-4">{error}</p>}
       </form>
     </div>

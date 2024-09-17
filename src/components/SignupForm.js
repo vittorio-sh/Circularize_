@@ -51,7 +51,7 @@ export default function SignupForm({ onToggle, onSignupSuccess }) {
   return (
     <Card className="mx-auto max-w-sm">
       <CardHeader>
-        <CardTitle className="text-xl">Sign Up</CardTitle>
+        <CardTitle className="text-xl ">Sign Up</CardTitle>
         <CardDescription>
           Enter your information to create an account.
         </CardDescription>
@@ -60,7 +60,7 @@ export default function SignupForm({ onToggle, onSignupSuccess }) {
         <form onSubmit={handleSubmit} className="grid gap-4">
           <div className="grid grid-cols-2 gap-4">
             <div className="grid gap-2">
-              <Label htmlFor="first-name">First name</Label>
+              <Label className="text-purple-900" htmlFor="first-name">First name</Label>
               <Input
                 id="first-name"
                 placeholder="Max"
@@ -70,7 +70,7 @@ export default function SignupForm({ onToggle, onSignupSuccess }) {
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="last-name">Last name</Label>
+              <Label className="text-purple-900" htmlFor="last-name">Last name</Label>
               <Input
                 id="last-name"
                 placeholder="Robinson"
@@ -81,7 +81,7 @@ export default function SignupForm({ onToggle, onSignupSuccess }) {
             </div>
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="email">Email</Label>
+            <Label className="text-purple-900" htmlFor="email">Email</Label>
             <Input
               id="email"
               type="email"
@@ -92,7 +92,7 @@ export default function SignupForm({ onToggle, onSignupSuccess }) {
             />
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="password">Password</Label>
+            <Label className="text-purple-900" htmlFor="password">Password</Label>
             <Input
               id="password"
               type="password"
@@ -104,7 +104,7 @@ export default function SignupForm({ onToggle, onSignupSuccess }) {
 
           {error && <p className="text-red-500">{error}</p>}
 
-          <Button type="submit" className="w-full" disabled={loading}>
+          <Button type="submit" className="w-full bg-purple-700" disabled={loading}>
             {loading ? 'Signing up...' : 'Create an account'}
           </Button>
         </form>

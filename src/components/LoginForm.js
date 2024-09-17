@@ -57,7 +57,7 @@ export default function LoginForm({ onToggle, onLoginSuccess }) {
       <CardContent>
         <form onSubmit={handleSubmit} className="grid gap-4">
           <div className="grid gap-2">
-            <Label htmlFor="email">Email</Label>
+            <Label className="text-purple-900" htmlFor="email">Email</Label>
             <Input
               id="email"
               type="email"
@@ -69,7 +69,7 @@ export default function LoginForm({ onToggle, onLoginSuccess }) {
           </div>
           <div className="grid gap-2">
             <div className="flex items-center">
-              <Label htmlFor="password">Password</Label>
+              <Label className="text-purple-900" htmlFor="password">Password</Label>
             </div>
             <Input
               id="password"
@@ -83,7 +83,7 @@ export default function LoginForm({ onToggle, onLoginSuccess }) {
 
           {error && <p className="text-red-500">{error}</p>}
 
-          <Button type="submit" className="w-full" disabled={loading}>
+          <Button type="submit" className="w-full bg-purple-700" disabled={loading}>
             {loading ? 'Logging in...' : 'Login'}
           </Button>
         </form>
