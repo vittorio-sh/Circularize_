@@ -56,8 +56,7 @@ export default function Dashboard() {
               { icon: FaCalendarAlt, title: "Swipe to Find Events", description: "Easily browse and swipe through events to match your interests." },
               { icon: FaRunning, title: "Create Events", description: "Organize your own events, from sports games to music jam sessions." },
               { icon: FaUserFriends, title: "Meet New People", description: "Connect with like-minded individuals for sports or friendships." },
-              { icon: FaGuitar, title: "Find Musicians", description: "Discover local musicians to collaborate and jam with in your area." },
-              { icon: FaHandshake, title: "Build Communities", description: "Start or join communities based on shared activities and interests." }
+              { icon: FaHandshake, title: "Build Communities", description: "Start or join events based on shared activities and interests." }
             ].map((feature, index) => (
               <div key={index} className="flex items-center space-x-4">
                 <feature.icon className="text-4xl flex-shrink-0" />

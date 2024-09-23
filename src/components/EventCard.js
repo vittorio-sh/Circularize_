@@ -1,19 +1,29 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { UserContext } from '@/pages/_app'; 
+import Popup from '../components/Popup';
 
 export default function EventCard({ event, onLike, onDislike }) {
   const { user } = useContext(UserContext); 
+  const [showPopup, setShowPopup] = useState(false);
 
   const handleLike = () => {
     if (!user) {
-      alert('Not logged in, can’t like events!');
+      setShowPopup(true); 
       return;
     }
     onLike(event.id);
   };
 
+  const handleClosePopup = () => {
+    setShowPopup(false); 
+  };
+
   return (
     <div className="relative w-full max-w-lg mx-auto bg-white shadow-lg rounded-lg overflow-hidden flex flex-col mt-4 mb-4 h-auto shadow-xl">
+      {showPopup && (
+        <Popup message="Not logged in, can’t like events!" onClose={handleClosePopup} />
+      )}
+
       <div className="flex-shrink-0">
         <img
           src={event.photo}

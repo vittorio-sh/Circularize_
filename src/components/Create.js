@@ -3,6 +3,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
+import Popup from '../components/Popup'; 
 import { UserContext } from '@/pages/_app'; 
 
 export default function Create() {
@@ -14,9 +15,16 @@ export default function Create() {
   const [tags, setTags] = useState(''); 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [showPopup, setShowPopup] = useState(false); 
 
   const handleCreate = async (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
+
+    if (!user) {
+      setShowPopup(true); 
+      return;
+    }
+
     setLoading(true);
     setError(null);
 
@@ -50,7 +58,6 @@ export default function Create() {
 
       setUser(updatedUser);
 
-      // reset form fields after 
       setEventName('');
       setEventDate('');
       setDescription('');
@@ -62,6 +69,10 @@ export default function Create() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleClosePopup = () => {
+    setShowPopup(false); 
   };
 
   return (
@@ -109,7 +120,7 @@ export default function Create() {
             onChange={(e) => setImageUrl(e.target.value)}
             placeholder="Enter image URL for the event"
             className="mt-1 border-2 border-purple-200 w-full"
-              required
+            required
           />
         </div>
         <div>
@@ -132,6 +143,13 @@ export default function Create() {
         </Button>
         {error && <p className="text-red-500 mt-4">{error}</p>}
       </form>
+
+      {showPopup && (
+        <Popup 
+          message="You must be logged in to create an event!" 
+          onClose={handleClosePopup} 
+        />
+      )}
     </div>
   );
 }

@@ -1,16 +1,23 @@
 import * as React from "react";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { useRouter } from "next/router"; 
 import { UserContext } from "@/pages/_app"; 
 
-export default function FilterNav() {
+export default function TopNav() {
   const { user, setUser } = useContext(UserContext); 
   const router = useRouter();
+
+  useEffect(() => {
+    const storedUser = sessionStorage.getItem('user');
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, [setUser]);
 
   const handleButtonClick = () => {
     if (user) {
       setUser(null); 
-      localStorage.removeItem("user"); 
+      sessionStorage.removeItem("user"); 
     }
     router.push("/Dashboard"); 
   };
