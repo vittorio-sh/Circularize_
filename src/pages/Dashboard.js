@@ -3,7 +3,7 @@ import { UserContext } from '@/pages/_app';
 import { useRouter } from 'next/router'; 
 import LoginForm from '../components/LoginForm'; 
 import SignupForm from '../components/SignupForm'; 
-import { FaUserFriends, FaRunning, FaGuitar, FaCalendarAlt, FaHandshake } from 'react-icons/fa'; 
+import { FaUserFriends, FaRunning, FaCalendarAlt, FaHandshake } from 'react-icons/fa'; 
 
 export default function Dashboard() {
   const [isLogin, setIsLogin] = useState(true); 
